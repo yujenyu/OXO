@@ -4,7 +4,8 @@ class OXOModel
 {
     // private OXOPlayer cells[][];
     private ArrayList<List<OXOPlayer>> cells;
-    private OXOPlayer players[];
+    // private OXOPlayer players[];
+    private ArrayList<OXOPlayer> players;
     private OXOPlayer currentPlayer;
     private OXOPlayer winner;
     private boolean gameDrawn;
@@ -21,27 +22,30 @@ class OXOModel
                 cells.get(row).add(null);
             }
         }
-        players = new OXOPlayer[2];
+        players = new ArrayList<>();
     }
 
     public int getNumberOfPlayers()
     {
-        return players.length;
+        // return players.length;
+        return players.size();
     }
 
     public void addPlayer(OXOPlayer player)
     {
-        for(int i=0; i<players.length ;i++) {
-            if(players[i] == null) {
-                players[i] = player;
-                return;
-            }
-        }
+//        for(int i=0; i<players.length ;i++) {
+//            if(players[i] == null) {
+//                players[i] = player;
+//                return;
+//            }
+//        }
+        players.add(player);
     }
 
     public OXOPlayer getPlayerByNumber(int number)
     {
-        return players[number];
+        // return players[number];
+        return players.get(number);
     }
 
     public OXOPlayer getWinner()
@@ -113,19 +117,24 @@ class OXOModel
         return gameDrawn;
     }
 
-    public boolean checkWinner(OXOPlayer currentPlayer)
+    public boolean winDetection(OXOPlayer currentPlayer)
     {
         int occupation = 0;
 
         // Check horizontal
         for(int i = 0; i < getNumberOfRows(); i++) {
             occupation = 0;
-            for(int j = 0; j < getNumberOfColumns(); j++){
-                if(getCellOwner(i, j) == currentPlayer){
-                    occupation++;
+            for(int j = 0; j < getNumberOfColumns() - 1; j++) {
+                if(getCellOwner(i, j) != null && getCellOwner(i, j+1) != null) {
+                    if(getCellOwner(i, j) == getCellOwner(i, j + 1) && getCellOwner(i, j) == currentPlayer) {
+                        occupation++;
+                    }
+                    else {
+                        occupation = 0;
+                    }
                 }
             }
-            if(occupation == getWinThreshold()){
+            if(occupation == getWinThreshold() - 1) {
                 return true;
             }
         }
@@ -133,41 +142,56 @@ class OXOModel
         // Check vertical
         for(int i = 0; i < getNumberOfColumns(); i++) {
             occupation = 0;
-            for(int j = 0; j < getNumberOfRows(); j++){
-                if(getCellOwner(j, i) == currentPlayer){
-                    occupation++;
+            for(int j = 0; j < getNumberOfRows() -1; j++) {
+                if(getCellOwner(j, i) != null && getCellOwner(j + 1, i) != null) {
+                    if(getCellOwner(j, i) == getCellOwner(j + 1, i) && getCellOwner(j, i) == currentPlayer) {
+                        occupation++;
+                    }
+                    else {
+                        occupation = 0;
+                    }
                 }
             }
-            if(occupation == getWinThreshold()){
+            if(occupation == getWinThreshold() - 1) {
                 return true;
             }
         }
 
-        // Check diagonals [0][0], [1][1], [2][2]
+        // Check diagonal (Upper left to lower right)
         occupation = 0;
-        for(int i = 0; i < getWinThreshold(); i++){
-            if(getCellOwner(i, i) == currentPlayer){
-                occupation++;
+        for(int i = 0; i < getNumberOfRows() - 1; i++) {
+            if(getCellOwner(i, i) != null && getCellOwner(i+1, i+1) != null) {
+                if(getCellOwner(i, i) == getCellOwner(i+1, i+1)) {
+                    occupation++;
+                }
+                else {
+                    occupation = 0;
+                }
             }
-            if(occupation == getWinThreshold()){
+            if(occupation == getWinThreshold() - 1) {
                 return true;
             }
         }
 
-        // Check diagonals [0][2], [1][1], [2][0]
+        // Check diagonal (Upper right to lower left)
         occupation = 0;
-        for(int i = 0; i < getWinThreshold(); i++){
-            if(getCellOwner(i, getWinThreshold() - i - 1) == currentPlayer){
-                occupation++;
+        for(int i = 0; i < getNumberOfRows() - 1; i++) {
+            if(getCellOwner(i, getNumberOfRows() - i - 1) != null && getCellOwner(i+1, getNumberOfRows() - i - 2) != null) {
+                if(getCellOwner(i, getNumberOfRows() - i - 1) == getCellOwner(i + 1, getNumberOfRows() - i - 2)) {
+                    occupation++;
+                }
+                else {
+                    occupation = 0;
+                }
             }
-            if(occupation == getWinThreshold()){
+            if(occupation == getWinThreshold() - 1){
                 return true;
             }
         }
         return false;
     }
 
-    public boolean checkDrawn()
+    public boolean drawnDetection()
     {
         int count = 0;
         for(int i = 0; i < getNumberOfRows(); i++) {
@@ -188,10 +212,10 @@ class OXOModel
         }
     }
 
-    public void extendBoard() {
+    public void extendBoard()
+    {
         cells.add(new ArrayList<>());
         for(int row = 0; row < cells.size(); row++) {
-            winThreshold++;
             cells.get(row).add(null);
             cells.get(cells.size() - 1).add(null);
         }
