@@ -6,6 +6,7 @@ public class CellAlreadyTakenException extends OXOMoveException
     private int columnNumber;
 
     public CellAlreadyTakenException(int row, int column) {
+        super();
         rowNumber = row;
         columnNumber = column;
     }

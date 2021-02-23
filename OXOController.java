@@ -32,7 +32,10 @@ class OXOController
         row = cmd[0] - 'a';
         col = cmd[1] - '1';
 
-        if((cmd[0] > 'z' || cmd[0] < 'a') && (cmd[0] > '9' || cmd[0] < '0')) {
+        if(((cmd[0] > 'z' || cmd[0] < 'a') && (cmd[0] > '9' || cmd[0] < '0')) && (cmd[1] > 'z' || cmd[1] < 'a') && (cmd[1] > '9' || cmd[1] < '0')) {
+            throw new InvalidIdentifierCharacterException(cmd[0], cmd[1], RowOrColumn.ROW, RowOrColumn.COLUMN);
+        }
+        else if((cmd[0] > 'z' || cmd[0] < 'a') && (cmd[0] > '9' || cmd[0] < '0')) {
             throw new InvalidIdentifierCharacterException(cmd[0], RowOrColumn.ROW);
         }
         else if((cmd[1] > 'z' || cmd[1] < 'a') && (cmd[1] > '9' || cmd[1] < '0')) {
