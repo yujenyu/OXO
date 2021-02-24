@@ -4,7 +4,6 @@ public class OutsideCellRangeException extends CellDoesNotExistException
 {
     private int position;
     private RowOrColumn type;
-
     private int inputrow;
     private int inputcolumn;
     private RowOrColumn row;

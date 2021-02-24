@@ -25,4 +25,7 @@ public class OXOMoveException extends Exception
         return columnNumber;
     }
 
+    public String toString() {
+        return "Move exception.";
+    }
 }

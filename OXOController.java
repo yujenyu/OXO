@@ -32,13 +32,13 @@ class OXOController
         row = cmd[0] - 'a';
         col = cmd[1] - '1';
 
-        if(((cmd[0] > 'z' || cmd[0] < 'a') && (cmd[0] > '9' || cmd[0] < '0')) && (cmd[1] > 'z' || cmd[1] < 'a') && (cmd[1] > '9' || cmd[1] < '0')) {
+        if((!Character.isLetter(cmd[0])) && (!Character.isDigit(cmd[1]))) {
             throw new InvalidIdentifierCharacterException(cmd[0], cmd[1], RowOrColumn.ROW, RowOrColumn.COLUMN);
         }
-        else if((cmd[0] > 'z' || cmd[0] < 'a') && (cmd[0] > '9' || cmd[0] < '0')) {
+        else if(!Character.isLetter(cmd[0])) {
             throw new InvalidIdentifierCharacterException(cmd[0], RowOrColumn.ROW);
         }
-        else if((cmd[1] > 'z' || cmd[1] < 'a') && (cmd[1] > '9' || cmd[1] < '0')) {
+        else if(!Character.isDigit(cmd[1])) {
             throw new InvalidIdentifierCharacterException(cmd[1], RowOrColumn.COLUMN);
         }
 
@@ -68,11 +68,11 @@ class OXOController
             throw new CellAlreadyTakenException(row, col);
         }
 
+//        // Extend board if game is drawn
 //        if(gameModel.isGameDrawn()) {
 //            gameModel.extendBoard();
 //            gameModel.setGameNotDrawn();
 //            gameModel.setCurrentPlayer(gameModel.getPlayerByNumber(++count % gameModel.getNumberOfPlayers()));
 //        }
-
     }
 }

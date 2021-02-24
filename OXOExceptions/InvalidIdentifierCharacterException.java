@@ -4,7 +4,6 @@ public class InvalidIdentifierCharacterException extends InvalidIdentifierExcept
 {
     private char character;
     private RowOrColumn type;
-
     private char inputrow;
     private char inputcolumn;
     private RowOrColumn row;

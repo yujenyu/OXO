@@ -120,75 +120,132 @@ class OXOModel
     public boolean winDetection(OXOPlayer currentPlayer)
     {
         int occupation = 0;
-
-        // Check horizontal
-        for(int i = 0; i < getNumberOfRows(); i++) {
-            occupation = 0;
-            for(int j = 0; j < getNumberOfColumns() - 1; j++) {
-                if(getCellOwner(i, j) != null && getCellOwner(i, j+1) != null) {
-                    if(getCellOwner(i, j) == getCellOwner(i, j + 1) && getCellOwner(i, j) == currentPlayer) {
-                        occupation++;
-                    }
-                    else {
-                        occupation = 0;
-                    }
-                }
-            }
-            if(occupation == getWinThreshold() - 1) {
-                return true;
-            }
-        }
-
-        // Check vertical
-        for(int i = 0; i < getNumberOfColumns(); i++) {
-            occupation = 0;
-            for(int j = 0; j < getNumberOfRows() -1; j++) {
-                if(getCellOwner(j, i) != null && getCellOwner(j + 1, i) != null) {
-                    if(getCellOwner(j, i) == getCellOwner(j + 1, i) && getCellOwner(j, i) == currentPlayer) {
-                        occupation++;
-                    }
-                    else {
-                        occupation = 0;
-                    }
-                }
-            }
-            if(occupation == getWinThreshold() - 1) {
-                return true;
-            }
-        }
-
-        // Check diagonal (Upper left to lower right)
-        occupation = 0;
-        for(int i = 0; i < getNumberOfRows() - 1; i++) {
-            if(getCellOwner(i, i) != null && getCellOwner(i+1, i+1) != null) {
-                if(getCellOwner(i, i) == getCellOwner(i+1, i+1)) {
-                    occupation++;
-                }
-                else {
+        for(int i = 0; i < getNumberOfRows() ; i++) {
+            for(int j = 0; j < getNumberOfColumns(); j++) {
+                if(getCellOwner(i, j) != null) {
+                    // Check horizontal
                     occupation = 0;
-                }
-            }
-            if(occupation == getWinThreshold() - 1) {
-                return true;
-            }
-        }
+                    int x = j, y = i;
+                    while (x + 1 < getNumberOfColumns() && (getCellOwner(y, x) == getCellOwner(y, x + 1))) {
+                        occupation++;
+                        x++;
+                    }
+                    if (occupation == getWinThreshold() - 1) {
+                        return true;
+                    }
 
-        // Check diagonal (Upper right to lower left)
-        occupation = 0;
-        for(int i = 0; i < getNumberOfRows() - 1; i++) {
-            if(getCellOwner(i, getNumberOfRows() - i - 1) != null && getCellOwner(i+1, getNumberOfRows() - i - 2) != null) {
-                if(getCellOwner(i, getNumberOfRows() - i - 1) == getCellOwner(i + 1, getNumberOfRows() - i - 2)) {
-                    occupation++;
-                }
-                else {
+                    // Check vertical
                     occupation = 0;
+                    x = j;
+                    y = i;
+                    while (y + 1 < getNumberOfRows() && (getCellOwner(y, x) == getCellOwner(y + 1, x))) {
+                        occupation++;
+                        y++;
+                    }
+                    if (occupation == getWinThreshold() - 1) {
+                        return true;
+                    }
+
+                    // Check diagonal (Upper left to lower right)
+                    occupation = 0;
+                    x = j;
+                    y = i;
+                    while (x + 1 < getNumberOfColumns() && y + 1 < getNumberOfRows() && getCellOwner(y, x) == getCellOwner(y + 1, x + 1)) {
+                        occupation++;
+                        x++;
+                        y++;
+                    }
+                    if (occupation == getWinThreshold() - 1) {
+                        return true;
+                    }
+
+                    // Check diagonal (Upper right to lower left)
+                    occupation = 0;
+                    x = j;
+                    y = i;
+                    while (x - 1 >= 0 && y + 1 < getNumberOfRows() && getCellOwner(y, x) == getCellOwner(y + 1, x - 1)) {
+                        occupation++;
+                        x--;
+                        y++;
+                    }
+                    if (occupation == getWinThreshold() - 1) {
+                        return true;
+                    }
                 }
-            }
-            if(occupation == getWinThreshold() - 1){
-                return true;
             }
         }
         return false;
+
+//        int occupation = 0;
+//
+//        // Check horizontal
+//        for(int i = 0; i < getNumberOfRows(); i++) {
+//            occupation = 0;
+//            for(int j = 0; j < getNumberOfColumns() - 1; j++) {
+//                if(getCellOwner(i, j) != null && getCellOwner(i, j+1) != null) {
+//                    if(getCellOwner(i, j) == getCellOwner(i, j + 1) && getCellOwner(i, j) == currentPlayer) {
+//                        occupation++;
+//                    }
+//                    else {
+//                        occupation = 0;
+//                    }
+//                }
+//            }
+//            if(occupation == getWinThreshold() - 1) {
+//                return true;
+//            }
+//        }
+//
+//        // Check vertical
+//        for(int i = 0; i < getNumberOfColumns(); i++) {
+//            occupation = 0;
+//            for(int j = 0; j < getNumberOfRows() -1; j++) {
+//                if(getCellOwner(j, i) != null && getCellOwner(j + 1, i) != null) {
+//                    if(getCellOwner(j, i) == getCellOwner(j + 1, i) && getCellOwner(j, i) == currentPlayer) {
+//                        occupation++;
+//                    }
+//                    else {
+//                        occupation = 0;
+//                    }
+//                }
+//            }
+//            if(occupation == getWinThreshold() - 1) {
+//                return true;
+//            }
+//        }
+//
+//        // Check diagonal (Upper left to lower right)
+//        occupation = 0;
+//        for(int i = 0; i < getNumberOfRows() - 1; i++) {
+//            if(getCellOwner(i, i) != null && getCellOwner(i+1, i+1) != null) {
+//                if(getCellOwner(i, i) == getCellOwner(i+1, i+1)) {
+//                    occupation++;
+//                }
+//                else {
+//                    occupation = 0;
+//                }
+//            }
+//            if(occupation == getWinThreshold() - 1) {
+//                return true;
+//            }
+//        }
+//
+//        // Check diagonal (Upper right to lower left)
+//        occupation = 0;
+//        for(int i = 0; i < getNumberOfRows() - 1; i++) {
+//            if(getCellOwner(i, getNumberOfRows() - i - 1) != null && getCellOwner(i+1, getNumberOfRows() - i - 2) != null) {
+//                if(getCellOwner(i, getNumberOfRows() - i - 1) == getCellOwner(i + 1, getNumberOfRows() - i - 2)) {
+//                    occupation++;
+//                }
+//                else {
+//                    occupation = 0;
+//                }
+//            }
+//            if(occupation == getWinThreshold() - 1){
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     public boolean drawnDetection()
