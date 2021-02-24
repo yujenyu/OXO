@@ -13,7 +13,6 @@ class OXOController
     {
         gameModel = model;
         gameModel.setCurrentPlayer(gameModel.getPlayerByNumber(0));
-        // gameModel.addPlayer(new OXOPlayer('V'));
     }
 
     public void handleIncomingCommand(String command) throws OXOMoveException
@@ -54,7 +53,7 @@ class OXOController
 
         if(gameModel.getCellOwner(row, col) == null) {
             gameModel.setCellOwner(row, col, currentPlayer);
-            if(gameModel.winDetection(currentPlayer)) {
+            if(gameModel.winDetection()) {
                 gameModel.setWinner(currentPlayer);
             }
             else if(gameModel.drawnDetection()) {
